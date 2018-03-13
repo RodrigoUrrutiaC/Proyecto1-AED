@@ -24,14 +24,14 @@ int main()
   while(1)
   {                       
     sensorFrontal = ping_cm(8);
-    sensorDerecho = ping_cm(10);
+    sensorDerecho = ping_cm(6);
     i = 0;
     
     
     while(sensorFrontal >= 10 && sensorDerecho < 25) // el robot camina hacia enfrente 
     {
       sensorFrontal = ping_cm(8);
-      sensorDerecho = ping_cm(10); 
+      sensorDerecho = ping_cm(6); 
       
       drive_ramp(50,50);
      
