@@ -9,6 +9,7 @@ int sensorFrontal, sensorDerecho; //dos sensores
 int laberinto[50][50]; //matriz con la posicion del robot
 int spd, ejeX, ejeY, orientacion; //Variables de funcionamiento del programa
 int i,j; //Contadores
+int giro = 34;
 
 
 // Programa principal
@@ -49,7 +50,7 @@ int main()
   
     if(sensorDerecho < 25) //el robot gira a la izquierda
     {
-      drive_speed(-30,30);
+      drive_speed(-giro,giro);
       j = 0;
       while(j < 97)
       {
@@ -71,7 +72,7 @@ int main()
       }
       
       
-      drive_speed(30,-30);
+      drive_speed(giro,-giro);
       j = 0;
       while(j < 148)
       {
