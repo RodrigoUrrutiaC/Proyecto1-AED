@@ -9,10 +9,11 @@ int sensorFrontal, sensorDerecho; //dos sensores
 int laberinto[50][50]; //matriz con la posicion del robot
 int spd, ejeX, ejeY, orientacion; //Variables de funcionamiento del programa
 int i,j; //Contadores
-int giro = 34;
+int giro = 34; //velocidad de giro
 
 
 // Programa principal
+//Usando el sensor derecho busca una pared ala que seguir
 
 int main()                              
 {
@@ -24,8 +25,8 @@ int main()
   
   while(1)
   {                       
-    sensorFrontal = ping_cm(8);
-    sensorDerecho = ping_cm(6);
+    sensorFrontal = ping_cm(8); //sensor frontal
+    sensorDerecho = ping_cm(6); //sensor derecho
     i = 0;
     
     
@@ -48,7 +49,7 @@ int main()
     }
    
   
-    if(sensorDerecho < 25) //el robot gira a la izquierda
+    if(sensorDerecho < 25) //el robot gira a la izquierda al detectar una pared a una distancia de 26 cm
     {
       drive_speed(-giro,giro);
       j = 0;
@@ -99,6 +100,9 @@ int main()
 
 // METODOS
 
+//Metodo provicional en desarrollo que identifica cuando el robot se ubica en una isla del laberinto
+//Es un contador que guarda los numeros de vueltas que da el robot e identifica los lugares por los que ya ha pasado
+//Cuando identifica que ya paso en un lugar 
 void contador(){
   laberinto[ejeX][ejeY]= laberinto[ejeX][ejeY]+1;
 }  
