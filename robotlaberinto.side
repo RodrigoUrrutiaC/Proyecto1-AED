@@ -1,53 +1,97 @@
-/*
-  Blank Simple Project.c
-  http://learn.parallax.com/propeller-c-tutorials 
-*/
-#include "simpletools.h"
-#include "abdrive.h"
-#include "ping.h"
 
-int senFrent = 8;
-int lap = 0;
+#include "simpletools.h"                      
+#include "abdrive.h"                        
+#include "ping.h"                          
 
-int main()
-{  
+// Declaración de variables
+
+int sensorFrontal, sensorDerecho; //dos sensores                               
+int laberinto[50][50]; //matriz con la posicion del robot
+int spd, ejeX, ejeY, orientacion; //Variables de funcionamiento del programa
+int i,j; //Contadores
+int giro = 45;
+int giro2 = 50;
+int distanciaFrente = 10;
+int distancia = 15;
+
+
+// Programa principal
+
+int main()                              
+{
+  pause(1000);
+
+  ejeX = 0;
+  ejeY = 0;
+  orientacion = 0;
+  
   while(1)
-  {
-    drive_ramp(60,60);
-    while(ping_cm(senFrent) > 15) {
-       pause(5); 
-       }
-    drive_ramp(0,0);
+  {                       
+    sensorFrontal = ping_cm(8);
+    sensorDerecho = ping_cm(10);
+    i = 0;
     
-    drive_goto(-26,25);
-   lap--;
-        
-    while(lap != 0)
+    
+    while(sensorFrontal >= distanciaFrente && sensorDerecho < distancia) // el robot camina hacia enfrente 
     {
-       drive_goto(25,-26);
-  lap++;
+      sensorFrontal = ping_cm(8);
+      sensorDerecho = ping_cm(10); 
+      
+      drive_ramp(50,50);
      
-      if(ping_cm(senFrent) < 15)
-      {
-        drive_goto(-26,25);
-
-  lap--;
-      }
-
-      else
-      {
-        drive_goto(64,64);
-        continue;
-      }       
+      if(i == 50){       
+        coordenadas();
+        contador();
+        i = 0;
+      }else{
+        i++;
+      }   
       
-      if(ping_cm(senFrent) < 15)
-      {
-       drive_goto(-26,25);
+      pause(5);            
+    }
+   
+  
+    if(sensorDerecho < distancia) //el robot gira a la izq
+    {
+      drive_speed(-giro,giro);      
+      orientacion = orientacion + 3;
+      orientacion = orientacion % 4;             
+        
+    }else{  // el robot gira a la derecha
+            // los siguientes tres while solo hacen que el giro no sea tan abrupto
 
-  lap--; 
-      }
+      drive_goto(50, 50);
       
-      drive_goto(64,64);         
-    }    
+      //drive_speed(giro,-giro);
+      
+      drive_goto(40,-25);  
+      j = 0;  
+      
+      orientacion++;
+      orientacion = orientacion % 4;
+    }      
+ 
+  }  
+                         
+}
+
+// METODOS
+
+void contador(){
+  laberinto[ejeX][ejeY]= laberinto[ejeX][ejeY]+1;
+}  
+
+int coordenadas(){
+  if(orientacion == 0){
+    ejeY++;
   }    
+  if(orientacion == 1){
+    ejeX++;
+  }
+  if(orientacion == 2){
+    ejeY--;
+  }
+  if(orientacion == 3){
+    ejeX--;
+  }  
 }
